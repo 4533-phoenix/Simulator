@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://Camera.gd" id="2_tvxrk"]
 [ext_resource type="PackedScene" uid="uid://8em1gqgkdyww" path="res://Scenes/Crescendo Field.scn" id="3_57rii"]
 [ext_resource type="PackedScene" uid="uid://dwmkk3iucdw1m" path="res://Robots/Swerve/Swerve.scn" id="4_ygah4"]
-[ext_resource type="Script" path="res://Scenes/Fix.gd" id="6_pwxl7"]
+[ext_resource type="Script" path="res://Mappings.gd" id="6_pwxl7"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_prqwl"]
 panorama = ExtResource("2_86sd3")
@@ -51,5 +51,5 @@ environment = SubResource("Environment_8rj4m")
 transform = Transform3D(0.682573, 0.0575083, -0.728552, 0.710264, -0.286965, 0.642788, -0.172103, -0.956213, -0.236721, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Fix" type="Node" parent="."]
+[node name="Mappings" type="Node" parent="."]
 script = ExtResource("6_pwxl7")
