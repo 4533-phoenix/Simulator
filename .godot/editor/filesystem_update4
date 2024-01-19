@@ -6,3 +6,8 @@ res://Materials/DiamondPlate.tres
 res://Scenes/Field.scn
 res://Scenes/Main.tscn
 res://Scenes/Crescendo Field.scn
+res://Robots/Car/Car.gd
+res://Robots/Car/Car.tscn
+res://Robots/Swerve/Swerve.scn
+res://Robots/Swerve/Swerve.gd
+res://Scenes/Fix.gd
