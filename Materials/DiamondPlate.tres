@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://db1manxjpgdde"]
+
+[ext_resource type="Texture2D" uid="uid://6faoy3uf32v" path="res://Materials/DiamondPlateOcclusion.png" id="1_bw0dp"]
+[ext_resource type="Texture2D" uid="uid://fw4o58j2dnow" path="res://Materials/DiamondPlateMetalness.png" id="2_juk0i"]
+[ext_resource type="Texture2D" uid="uid://d27yy3g7tapkp" path="res://Materials/DiamondPlateNormal.png" id="3_v2xvg"]
+[ext_resource type="Texture2D" uid="uid://c4bf2660yv348" path="res://Materials/DiamondPlateRoughness.png" id="4_6o7pk"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_plht3"]
+
+[resource]
+metallic = 1.0
+metallic_texture = ExtResource("2_juk0i")
+roughness_texture = ExtResource("4_6o7pk")
+normal_enabled = true
+normal_texture = ExtResource("3_v2xvg")
+ao_enabled = true
+ao_texture = ExtResource("1_bw0dp")
+heightmap_texture = SubResource("CompressedTexture2D_plht3")
+uv1_scale = Vector3(1.5, 1.5, 1.5)
+uv1_triplanar = true
+uv1_world_triplanar = true

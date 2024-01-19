@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://d0qhnovjnpgvs"]
+
+[ext_resource type="Script" path="res://Webserver.gd" id="1_2kcvs"]
+[ext_resource type="Texture2D" uid="uid://cuejalwq575jd" path="res://Materials/Background.jpg" id="2_86sd3"]
+[ext_resource type="Script" path="res://Camera.gd" id="2_tvxrk"]
+[ext_resource type="PackedScene" uid="uid://8em1gqgkdyww" path="res://Scenes/Crescendo Field.scn" id="3_57rii"]
+[ext_resource type="PackedScene" uid="uid://dewomjpbtvbex" path="res://Scenes/Robot.tscn" id="4_plx0o"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_prqwl"]
+panorama = ExtResource("2_86sd3")
+
+[sub_resource type="Sky" id="Sky_grejd"]
+sky_material = SubResource("PanoramaSkyMaterial_prqwl")
+
+[sub_resource type="Environment" id="Environment_8rj4m"]
+background_mode = 2
+sky = SubResource("Sky_grejd")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Webserver" type="Node" parent="." node_paths=PackedStringArray("subViewport")]
+script = ExtResource("1_2kcvs")
+subViewport = NodePath("SubViewport")
+
+[node name="SubViewport" type="SubViewport" parent="Webserver"]
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Webserver/SubViewport"]
+transform = Transform3D(-1, 2.26267e-08, 8.44439e-08, 0, 0.965926, -0.258819, -8.74228e-08, -0.258819, -0.965926, 0, 0.25, 0.5)
+visible = false
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -9.5, 1.4, -2)
+script = ExtResource("2_tvxrk")
+target = NodePath("../Robot")
+
+[node name="Crescendo Field" parent="." instance=ExtResource("3_57rii")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8rj4m")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.682573, 0.0575083, -0.728552, 0.710264, -0.286965, 0.642788, -0.172103, -0.956213, -0.236721, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Robot" parent="." node_paths=PackedStringArray("UICamera") instance=ExtResource("4_plx0o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.16764, 0)
+UICamera = NodePath("../Webserver/SubViewport/Camera3D")
