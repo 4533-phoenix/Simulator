@@ -1,12 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://d0qhnovjnpgvs"]
+[gd_scene load_steps=13 format=3 uid="uid://d0qhnovjnpgvs"]
 
 [ext_resource type="Script" path="res://Webserver.gd" id="1_2kcvs"]
-[ext_resource type="Script" path="res://Scenes/Main.gd" id="1_ek4dv"]
+[ext_resource type="Script" path="res://Core.gd" id="1_8in4e"]
+[ext_resource type="Script" path="res://Main.gd" id="1_huyxo"]
 [ext_resource type="Texture2D" uid="uid://cuejalwq575jd" path="res://Materials/Background.jpg" id="2_86sd3"]
 [ext_resource type="Script" path="res://Camera.gd" id="2_tvxrk"]
 [ext_resource type="PackedScene" uid="uid://8em1gqgkdyww" path="res://Scenes/Crescendo Field.scn" id="3_57rii"]
-[ext_resource type="PackedScene" uid="uid://dwmkk3iucdw1m" path="res://Robots/Swerve/Swerve.scn" id="4_ygah4"]
-[ext_resource type="Script" path="res://Scenes/Overlay.gd" id="6_5nr8h"]
+[ext_resource type="PackedScene" uid="uid://b7rhllghhef2h" path="res://Robots/Swerve/Swerve.tscn" id="4_ygah4"]
+[ext_resource type="Script" path="res://Overlay.gd" id="6_5nr8h"]
+[ext_resource type="Script" path="res://Mappings.gd" id="8_4mqu0"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_prqwl"]
 panorama = ExtResource("2_86sd3")
@@ -19,7 +21,7 @@ background_mode = 2
 sky = SubResource("Sky_grejd")
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource("1_ek4dv")
+script = ExtResource("1_huyxo")
 
 [node name="Webserver" type="Node" parent="." node_paths=PackedStringArray("subViewport")]
 script = ExtResource("1_2kcvs")
@@ -32,19 +34,15 @@ render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Webserver/SubViewport"]
 transform = Transform3D(-1, 2.26267e-08, 8.44439e-08, 0, 0.965926, -0.258819, -8.74228e-08, -0.258819, -0.965926, 0, 0.25, 0.5)
-visible = false
-
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -9.5, 1.4, -2)
-script = ExtResource("2_tvxrk")
-target = NodePath("../Swerve")
 
 [node name="Crescendo Field" parent="." instance=ExtResource("3_57rii")]
 
-[node name="Swerve" parent="." node_paths=PackedStringArray("worldCamera") instance=ExtResource("4_ygah4")]
+[node name="Swerve" parent="." node_paths=PackedStringArray("drvCam", "frontCam", "worldCamera") instance=ExtResource("4_ygah4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.317549, 0)
-worldCamera = NodePath("../Webserver/SubViewport/Camera3D")
 relativeMotionOffset = -90.0
+drvCam = NodePath("../MainCamera")
+frontCam = NodePath("../AltCamera")
+worldCamera = NodePath("../Webserver/SubViewport/Camera3D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_8rj4m")
@@ -53,8 +51,9 @@ environment = SubResource("Environment_8rj4m")
 transform = Transform3D(0.682573, 0.0575083, -0.728552, 0.710264, -0.286965, 0.642788, -0.172103, -0.956213, -0.236721, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Overlay" type="CanvasLayer" parent="."]
+[node name="Overlay" type="CanvasLayer" parent="." node_paths=PackedStringArray("btn")]
 script = ExtResource("6_5nr8h")
+btn = NodePath("SwitchPOV")
 
 [node name="Title" type="RichTextLabel" parent="Overlay"]
 offset_left = 4.0
@@ -62,3 +61,34 @@ offset_top = 4.0
 offset_right = 495.0
 offset_bottom = 32.0
 text = "Phoenix Vision Simulator 2024"
+
+[node name="SwitchPOV" type="Button" parent="Overlay"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -48.0
+offset_right = -24.0
+offset_bottom = -17.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Switch POV"
+
+[node name="MainCamera" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -9.5, 1.4, -2)
+script = ExtResource("2_tvxrk")
+target = NodePath("../Swerve")
+
+[node name="AltCamera" type="Camera3D" parent="."]
+
+[node name="Mappings" type="Node" parent="."]
+script = ExtResource("8_4mqu0")
+
+[node name="Core" type="Node" parent="." node_paths=PackedStringArray("drvCam", "frontCam", "rearCam")]
+unique_name_in_owner = true
+script = ExtResource("1_8in4e")
+drvCam = NodePath("../MainCamera")
+frontCam = NodePath("../AltCamera")
+rearCam = NodePath("../AltCamera")

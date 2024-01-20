@@ -1,15 +1,4 @@
-extends VehicleBody3D
-
-@export var robotCamera: Node3D
-@export var worldCamera: Camera3D
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	worldCamera.global_transform = robotCamera.global_transform
+extends "../Base.gd"
 
 # Called every physics update. 'delta' is the elapsed time since the previous update.
 func _physics_process(delta):

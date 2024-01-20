@@ -1,12 +1,9 @@
-extends VehicleBody3D
+extends "../Base.gd"
 
 @export var frontLeftWheel: VehicleWheel3D
 @export var frontRightWheel: VehicleWheel3D
 @export var backLeftWheel: VehicleWheel3D
 @export var backRightWheel: VehicleWheel3D
-
-@export var robotCamera: Node3D
-@export var worldCamera: Camera3D
 
 @export var speed: float = 250
 @export var turingSpeed: float = 100
@@ -19,14 +16,6 @@ var lastFrontLeftAngle = 0;
 var lastFrontRightAngle = 0;
 var lastBackLeftAngle = 0;
 var lastBackRightAngle = 0;
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	worldCamera.global_transform = robotCamera.global_transform
 
 # Called every physics update. 'delta' is the elapsed time since the previous update.
 func _physics_process(delta):

@@ -1,0 +1,86 @@
+[gd_scene load_steps=8 format=3 uid="uid://b7rhllghhef2h"]
+
+[ext_resource type="Script" path="res://Robots/Swerve/Swerve.gd" id="1_8xu8m"]
+[ext_resource type="Material" uid="uid://d4jc0qowvmolu" path="res://Materials/Black Plastic.tres" id="1_y4i2g"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4feex"]
+size = Vector3(0.762, 0.127, 0.762)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_d8gcf"]
+points = PackedVector3Array(0.387032, 0.0755952, 0.386972, -0.354794, -0.0635, -0.354724, -0.354794, -0.0635, 0.354724, -0.387048, 0.0755952, -0.386972, 0.354779, -0.0635, -0.354724, -0.387048, 0.0755952, 0.386972, 0.387032, 0.0755952, -0.386972, 0.354779, -0.0635, 0.354724)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qdxkv"]
+top_radius = 0.102
+bottom_radius = 0.102
+height = 0.051
+
+[sub_resource type="BoxMesh" id="BoxMesh_p2omw"]
+size = Vector3(0.1, 0.1, 0.2)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_cnn4y"]
+points = PackedVector3Array(-0.05, -0.05, -0.0985089, 0.05, 0.05, 0.0954305, -0.0484127, 0.05, 0.0954305, -0.05, -0.05, 0.0985089, 0.05, -0.0484127, -0.0954305, -0.0484127, 0.05, -0.0954305, 0.05, 0.05, -0.0954305, 0.05, -0.0484127, 0.0954305)
+
+[node name="Swerve" type="VehicleBody3D" node_paths=PackedStringArray("frontLeftWheel", "frontRightWheel", "backLeftWheel", "backRightWheel", "robotCamera")]
+script = ExtResource("1_8xu8m")
+frontLeftWheel = NodePath("Front Left Wheel")
+frontRightWheel = NodePath("Front Right Wheel")
+backLeftWheel = NodePath("Back Left Wheel")
+backRightWheel = NodePath("Back Right Wheel")
+robotCamera = NodePath("Camera")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_4feex")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_d8gcf")
+
+[node name="Front Left Wheel" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.05, 0.3)
+use_as_traction = true
+use_as_steering = true
+wheel_radius = 0.102
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Front Left Wheel"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("1_y4i2g")
+mesh = SubResource("CylinderMesh_qdxkv")
+
+[node name="Front Right Wheel" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, -0.05, 0.3)
+use_as_traction = true
+use_as_steering = true
+wheel_radius = 0.102
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Front Right Wheel"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("1_y4i2g")
+mesh = SubResource("CylinderMesh_qdxkv")
+
+[node name="Back Left Wheel" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.05, -0.3)
+use_as_traction = true
+wheel_radius = 0.102
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Back Left Wheel"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("1_y4i2g")
+mesh = SubResource("CylinderMesh_qdxkv")
+
+[node name="Back Right Wheel" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, -0.05, -0.3)
+use_as_traction = true
+wheel_radius = 0.102
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Back Right Wheel"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("1_y4i2g")
+mesh = SubResource("CylinderMesh_qdxkv")
+
+[node name="Camera" type="StaticBody3D" parent="."]
+transform = Transform3D(-1, -2.26267e-08, -8.44439e-08, 0, 0.965926, -0.258819, 8.74228e-08, -0.258819, -0.965926, 0, 0.15, 0.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera"]
+mesh = SubResource("BoxMesh_p2omw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera"]
+shape = SubResource("ConvexPolygonShape3D_cnn4y")
