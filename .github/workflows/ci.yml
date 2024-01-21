@@ -1,0 +1,54 @@
+name: CI
+
+env:
+  GODOT_VERSION: 4.2.1
+  EXPORT_NAME: phoenix-field-simulator
+
+on:
+  release:
+    types: [created]
+  schedule:
+    - cron: '04 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build releases
+    runs-on: ubuntu-20.04
+    container:
+      image: barichello/godot-ci:4.2.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      - name: Development build
+        if: github.event_name != 'release'
+        run: |
+          mkdir -v -p build
+          godot --headless --verbose --export-debug "Linux/X11" ../build/$EXPORT_NAME-linux-x86_64
+          godot --headless --verbose --export-debug "Windows Desktop" ../build/$EXPORT_NAME-windows-x86_64.exe
+      - name: Release build
+        if: github.event_name == 'release'
+        run: |
+          mkdir -v -p build
+          godot --headless --verbose --export-release "Linux/X11" ../build/$EXPORT_NAME-linux-x86_64
+          godot --headless --verbose --export-release "Windows Desktop" ../build/$EXPORT_NAME-windows-x86_64.exe
+      - name: Publish nightly build
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: ncipollo/release-action@v1
+        with:
+          tag: 'nightly'
+          name: 'Nightly build'
+          body: |
+            This is a automatic build of the `main` branch performed nightly.
+          artifacts: 'build/*'
+      - name: Publish release build
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: './build/*'
