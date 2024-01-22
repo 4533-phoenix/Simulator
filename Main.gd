@@ -8,3 +8,5 @@ func _ready():
 func _process(delta):
 	if Input.is_action_just_pressed("Quit", true):
 		get_tree().quit()
+	if Input.is_action_just_pressed("Switch POV", true):
+		Core.switch_pov()

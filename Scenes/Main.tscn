@@ -60,7 +60,7 @@ offset_left = 4.0
 offset_top = 4.0
 offset_right = 495.0
 offset_bottom = 32.0
-text = "Phoenix Vision Simulator 2024"
+text = "Phoenix Field Simulator 2024"
 
 [node name="SwitchPOV" type="Button" parent="Overlay"]
 anchors_preset = 3

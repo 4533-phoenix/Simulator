@@ -5,8 +5,8 @@ extends "../Base.gd"
 @export var backLeftWheel: VehicleWheel3D
 @export var backRightWheel: VehicleWheel3D
 
-@export var speed: float = 250
-@export var turingSpeed: float = 100
+@export var speed: float = 100
+@export var turingSpeed: float = 75
 @export var breakingForce: float = 1
 
 @export var relativeMotion: bool = true
