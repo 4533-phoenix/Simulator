@@ -1,3 +1,4 @@
+# TODO(drakeerv): Please document this
 @tool
 extends EditorScript
 

@@ -39,7 +39,6 @@ transform = Transform3D(-1, 2.26267e-08, 8.44439e-08, 0, 0.965926, -0.258819, -8
 
 [node name="Swerve" parent="." node_paths=PackedStringArray("drvCam", "frontCam", "worldCamera") instance=ExtResource("4_ygah4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.317549, 0)
-relativeMotionOffset = -90.0
 drvCam = NodePath("../MainCamera")
 frontCam = NodePath("../AltCamera")
 worldCamera = NodePath("../Webserver/SubViewport/Camera3D")

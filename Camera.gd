@@ -1,3 +1,8 @@
+'''
+Driver camera control
+'''
+# TODO(drakeerv): Please document this
+
 extends Camera3D
 
 @export var target: Node3D
