@@ -51,6 +51,7 @@ jobs:
             This is a automatic build of the `main` branch performed nightly.
           artifacts: 'build/*'
           allowUpdates: true
+          prerelease: true
       - name: Publish release build
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
