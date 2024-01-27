@@ -8,13 +8,12 @@ enum POV {
 }
 
 static var pov = POV.Driver
+static var field: Node3D
+static var visionStreamUp: bool = false
 
 @export var drvCam: Camera3D
 @export var frontCam: Camera3D
 @export var rearCam: Camera3D
-
-#static func _init():
-	#pass
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -39,11 +38,3 @@ static func switch_pov():
 			pov = POV.BotRear
 		POV.BotRear:
 			pov = POV.Driver
-
-func driver_cam():
-	drvCam
-func bot_front_cam():
-	frontCam
-func bot_rear_cam():
-	rearCam
-	

@@ -1,11 +1,11 @@
 extends CanvasLayer
 
-@export var btn: Button
+@export var switchPovBtn: Button
 #@export var drvCam: Camera3D
 #@export var botFrontCam: Camera3D
 #@export var botRearCam: Camera3D
 
-var btnDown: bool
+var switchPovBtnDown: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,11 +13,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if btn.button_pressed and !btnDown:
+	if switchPovBtn.button_pressed and !switchPovBtnDown:
 		Core.switch_pov()
-		btnDown = true
 	
-	if !btn.button_pressed and btnDown:
-		btnDown = false
-		
-
+	switchPovBtnDown = switchPovBtn.button_pressed

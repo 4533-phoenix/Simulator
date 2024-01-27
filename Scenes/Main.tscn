@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d0qhnovjnpgvs"]
+[gd_scene load_steps=14 format=3 uid="uid://d0qhnovjnpgvs"]
 
 [ext_resource type="Script" path="res://Webserver.gd" id="1_2kcvs"]
 [ext_resource type="Script" path="res://Core.gd" id="1_8in4e"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://8em1gqgkdyww" path="res://Scenes/Crescendo Field.scn" id="3_57rii"]
 [ext_resource type="PackedScene" uid="uid://b7rhllghhef2h" path="res://Robots/Swerve/Swerve.tscn" id="4_ygah4"]
 [ext_resource type="Script" path="res://Overlay.gd" id="6_5nr8h"]
+[ext_resource type="Script" path="res://Overlay/CtrlPanel.gd" id="7_n3gmg"]
 [ext_resource type="Script" path="res://Mappings.gd" id="8_4mqu0"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_prqwl"]
@@ -34,11 +35,17 @@ render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Webserver/SubViewport"]
 transform = Transform3D(-1, 2.26267e-08, 8.44439e-08, 0, 0.965926, -0.258819, -8.74228e-08, -0.258819, -0.965926, 0, 0.25, 0.5)
+visible = false
+
+[node name="MainCamera2" type="Camera3D" parent="Webserver/SubViewport" node_paths=PackedStringArray("target")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -9.5, 1.4, -2)
+script = ExtResource("2_tvxrk")
+target = NodePath("../../../Swerve")
 
 [node name="Crescendo Field" parent="." instance=ExtResource("3_57rii")]
 
 [node name="Swerve" parent="." node_paths=PackedStringArray("drvCam", "frontCam", "worldCamera") instance=ExtResource("4_ygah4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.317549, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.317549, 0)
 drvCam = NodePath("../MainCamera")
 frontCam = NodePath("../AltCamera")
 worldCamera = NodePath("../Webserver/SubViewport/Camera3D")
@@ -50,27 +57,53 @@ environment = SubResource("Environment_8rj4m")
 transform = Transform3D(0.682573, 0.0575083, -0.728552, 0.710264, -0.286965, 0.642788, -0.172103, -0.956213, -0.236721, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Overlay" type="CanvasLayer" parent="." node_paths=PackedStringArray("btn")]
+[node name="Overlay" type="CanvasLayer" parent="." node_paths=PackedStringArray("switchPovBtn")]
 script = ExtResource("6_5nr8h")
-btn = NodePath("SwitchPOV")
+switchPovBtn = NodePath("Panel/SwitchPOV")
 
 [node name="Title" type="RichTextLabel" parent="Overlay"]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 495.0
-offset_bottom = 32.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 507.0
+offset_bottom = 44.0
 text = "Phoenix Field Simulator 2024"
 
-[node name="SwitchPOV" type="Button" parent="Overlay"]
+[node name="Panel" type="Panel" parent="Overlay" node_paths=PackedStringArray("status")]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -128.0
-offset_top = -48.0
+offset_left = -480.0
+offset_top = -88.0
 offset_right = -24.0
-offset_bottom = -17.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("7_n3gmg")
+status = NodePath("RichTextLabel")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Overlay/Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 336.0
+offset_bottom = 56.0
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="SwitchPOV" type="Button" parent="Overlay/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -112.0
+offset_top = -40.0
+offset_right = -8.0
+offset_bottom = -9.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "Switch POV"

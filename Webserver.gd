@@ -1,7 +1,7 @@
 extends Node
 
 @export var subViewport: SubViewport
-@export var port: int = 8080
+@export var port: int = 6969
 @export var address: String = "0.0.0.0"
 
 var server: TCPServer
@@ -44,6 +44,7 @@ func _ready():
 			stop()
 		_:
 			print_debug("HTTP Server listening on http://%s:%s" % [address, port])
+			Core.visionStreamUp = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

@@ -33,6 +33,8 @@ var frontRightDir: float = 0
 var backLeftDir  : float = 0
 var backRightDir : float = 0
 
+var startDir: float
+
 class SwerveMod:
 	'''
 	A somewhat realistic swerve module
@@ -45,15 +47,20 @@ class SwerveMod:
 	
 	func set_direction(setpoint: float):
 		var curr = wheel.steering
-		var setpointAngle = Utils.closest_angle(curr, setpoint)
-		var setpointAngleFlipped = Utils.closest_angle(curr, setpoint + 180)
 		
-		if abs(setpointAngle) <= abs(setpointAngleFlipped):
-			wheel.steering = curr + setpointAngle
-			# TODO: Set gain to 1
-		else:
-			wheel.steering = curr + setpointAngleFlipped
-			# TODO: Set gain to -1
+		wheel.steering = setpoint
+		
+		#var setpointAngle = Utils.closest_angle(curr, setpoint)
+		#var setpointAngleFlipped = Utils.closest_angle(curr, setpoint + 180)
+		#
+		#if abs(setpointAngle) <= abs(setpointAngleFlipped):
+			##wheel.steering = curr + setpointAngle
+			#wheel.steering = setpointAngle
+			## TODO: Set gain to 1
+		#else:
+			##wheel.steering = curr + setpointAngleFlipped
+			#wheel.steering = setpointAngleFlipped
+			## TODO: Set gain to -1
 	
 	func set_speed(speed: float):
 		wheel.engine_force = speed
@@ -121,6 +128,8 @@ class SwerveCoord:
 			mod.set_speed(translate_power)
 	
 	func set_swerve_drive(direction: float, translate_power: float, turn_power: float):
+		dir = direction
+		
 		if translate_power == 0 and turn_power != 0:
 			self.inplace_turn(turn_power)
 		else:
@@ -129,6 +138,8 @@ class SwerveCoord:
 var coord: SwerveCoord
 
 func _ready():
+	startDir = global_rotation.x
+	
 	coord = SwerveCoord.new(
 		SwerveMod.new(frontLeftWheel),
 		SwerveMod.new(frontRightWheel),
@@ -136,18 +147,30 @@ func _ready():
 		SwerveMod.new(backRightWheel)
 	)
 
-func _physics_process(delta):
-	var translat = Input.get_vector("Forward", "Backward", "Left", "Right", 0.1)
+func _process(_delta):
+	pass #drvCam.global_transform = frontCam.global_transform
+
+func _physics_process(_delta):
+	#var translat = Input.get_vector("Backward", "Forward", "Right", "Left", 0.1)
+	var fwdBack = Input.get_axis("Backward", "Forward")
+	var leftRight = Input.get_axis("Right", "Left")
+	#var translat = Input.get_vector("Forward", "Backward", "Left", "Right", 0.1)
+	#var translat = Input.get_vector("Left", "Right", "Forward", "Backward", 0.1)
 	var rot = Input.get_axis("Rotate Left", "Rotate Right")
+	# Speed modifier
+	#   1.0 is added because the axis returns something between -1.0 and 1.0.
+	#   Adding 1.0 give us a range between 0.0 and 2.0, which is what we want for the speed mofifier.
+	#   Otherwise we could have a negative speed mod, which would cause the robot go in reverse.
+	var speedMod = Input.get_axis("Adjust Speed (-)", "Adjust Speed (+)") + 1.0
 	
-	var angle = translat.angle() * drvSpeed
-	var magnitude = translat.length() * dirSpeed
+	var angle = atan2(leftRight, fwdBack)
+	var magnitude = Utils.deadzone(sqrt(pow(leftRight, 2) + pow(fwdBack, 2)), 0.1)
 	var twist = Utils.deadzone(rot, 0.1)
 	
 	# Field-centric controls by subtracting the offset (robot angle)
-	#angle -= /* robot gyro */
+	#angle -= (global_rotation.x - startDir)
 	
-	coord.set_swerve_drive(translat.angle(), translat.length() * drvSpeed, rot * dirSpeed)
+	coord.set_swerve_drive(angle, magnitude * (drvSpeed*speedMod), twist * (dirSpeed*speedMod))
 
 ## Called every physics update. 'delta' is the elapsed time since the previous update.
 #func _physics_process(delta):
